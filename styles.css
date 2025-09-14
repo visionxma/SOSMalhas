@@ -175,6 +175,20 @@ body {
   position: relative;
 }
 
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.15;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #e0e6f6;
+}
+
 .hero h1 {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
@@ -508,6 +522,123 @@ body {
 .gallery-placeholder p {
   font-size: 1rem;
   font-weight: 600;
+}
+
+/* Carrossel com previews */
+.gallery-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  margin: 0 auto 2rem;
+  max-width: 600px;
+  user-select: none;
+}
+
+.gallery-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 380px;
+  height: 320px;
+  perspective: 1000px;
+}
+
+.gallery-slide {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 260px;
+  height: 320px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  background: #fff;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(-50%) scale(0.8);
+  transition: 
+    opacity 0.5s, 
+    transform 0.5s cubic-bezier(.4,2,.6,1),
+    box-shadow 0.5s;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gallery-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+}
+
+.gallery-slide.active {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  z-index: 3;
+  box-shadow: 0 20px 50px rgba(25,55,109,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  pointer-events: auto;
+}
+
+.gallery-slide.prev,
+.gallery-slide.next {
+  opacity: 0.7;
+  z-index: 2;
+  transform: translateX(-120%) scale(0.85) rotateY(18deg);
+  pointer-events: auto;
+  filter: blur(1px) grayscale(0.2);
+}
+
+.gallery-slide.next {
+  transform: translateX(20%) scale(0.85) rotateY(-18deg);
+}
+
+.gallery-slide.behind {
+  opacity: 0.3;
+  z-index: 1;
+  transform: translateX(-50%) scale(0.7) rotateY(0deg);
+  filter: blur(2px) grayscale(0.5);
+}
+
+.gallery-btn {
+  background: #19376d;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(25,55,109,0.08);
+}
+
+.gallery-btn:hover {
+  background: #2c5aa0;
+  transform: scale(1.08);
+}
+
+@media (max-width: 480px) {
+  .gallery-slides {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .gallery-track {
+    width: 220px;
+    height: 180px;
+  }
+  
+  .gallery-slide, .gallery-slide img {
+    width: 140px;
+    height: 180px;
+    border-radius: 12px;
+  }
 }
 
 /* Quote Section */

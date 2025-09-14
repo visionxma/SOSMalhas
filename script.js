@@ -317,3 +317,81 @@ if ('performance' in window) {
     }, 0);
   });
 }
+
+// Galeria Carrossel com previews e autoplay
+document.addEventListener('DOMContentLoaded', function() {
+  const images = [
+    { src: 'assets/MaranhaoCamisa.jpg', alt: 'Maranhão Camisa' },
+    { src: 'assets/ColegioSantaTeresa.jpg', alt: 'Colégio Santa Teresa' },
+    { src: 'assets/SagradaFamilia.jpg', alt: 'Sagrada Família' },
+    { src: 'assets/Educar.jpg', alt: 'Educar' },
+    { src: 'assets/NossaSenhora.jpg', alt: 'Nossa Senhora' },
+    { src: 'assets/Protemes.jpg', alt: 'Protemes' },
+    { src: 'assets/SaoFrancisco.jpg', alt: 'São Francisco' }
+  ];
+  const track = document.querySelector('.gallery-track');
+  const prevBtn = document.querySelector('.gallery-btn.prev-btn');
+  const nextBtn = document.querySelector('.gallery-btn.next-btn');
+  let current = 0;
+  let interval;
+
+  function renderSlides() {
+    track.innerHTML = '';
+    images.forEach((img, i) => {
+      const div = document.createElement('div');
+      div.className = 'gallery-slide';
+      if (i === current) div.classList.add('active');
+      else if (i === (current - 1 + images.length) % images.length) div.classList.add('prev');
+      else if (i === (current + 1) % images.length) div.classList.add('next');
+      else div.classList.add('behind');
+      div.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+      track.appendChild(div);
+    });
+  }
+
+  function showSlide(idx) {
+    current = (idx + images.length) % images.length;
+    renderSlides();
+  }
+
+  function nextSlide() {
+    showSlide(current + 1);
+  }
+  function prevSlide() {
+    showSlide(current - 1);
+  }
+
+  prevBtn?.addEventListener('click', () => {
+    prevSlide();
+    resetAutoplay();
+  });
+  nextBtn?.addEventListener('click', () => {
+    nextSlide();
+    resetAutoplay();
+  });
+
+  function startAutoplay() {
+    interval = setInterval(nextSlide, 3500);
+  }
+  function resetAutoplay() {
+    clearInterval(interval);
+    startAutoplay();
+  }
+
+  renderSlides();
+  startAutoplay();
+
+  // Swipe support for mobile
+  let startX = null;
+  track.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+  });
+  track.addEventListener('touchend', e => {
+    if (startX === null) return;
+    let endX = e.changedTouches[0].clientX;
+    if (endX - startX > 40) prevSlide();
+    else if (startX - endX > 40) nextSlide();
+    resetAutoplay();
+    startX = null;
+  });
+});
